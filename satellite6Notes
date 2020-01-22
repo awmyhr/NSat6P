@@ -4,7 +4,7 @@
 #------------------------------------------------------------------------------
 # name:    Satellite 6 Notes (satellite6Notes)
 # author:  awmyhr@gmail.com
-# revised: 20190416-141825
+# revised: 20200122-103126
 # created: 2016-12-07
 #------------------------------------------------------------------------------
 #-- NOTE: This document was compiled running Satellite 6.2.4 on RHEL 7.3
@@ -323,11 +323,20 @@ done
 foreman-rake console
 #-- This gives a promptless cli
 #   Some useful commands to clean up stuck tasks
-ForemanTasks::Task.where(:label => "Actions::Katello::Repository::Sync", :state => "paused").map { |task| task.update_column(:state, "stopped") }
-ForemanTasks::Task.where(:label => "Actions::Katello::CapsuleContent::Sync", :state => "paused").map { |task| task.update_column(:state, "stopped") }
-ForemanTasks::Task.where(:label => "Actions::Katello::CapsuleContent::Sync", :state => "planning").map { |task| task.update_column(:state, "stopped") }
-ForemanTasks::Task.where(:label => "Actions::Katello::RepositorySet::ScanCdn", :state => "running").map { |task| task.update_column(:state, "stopped") }
-
+# ForemanTasks::Task.where(:label => "Actions::Katello::Repository::Sync", :state => "paused").map { |task| task.update_column(:state, "stopped") }
+# ForemanTasks::Task.where(:label => "Actions::Katello::CapsuleContent::Sync", :state => "paused").map { |task| task.update_column(:state, "stopped") }
+# ForemanTasks::Task.where(:label => "Actions::Katello::CapsuleContent::Sync", :state => "planning").map { |task| task.update_column(:state, "stopped") }
+# ForemanTasks::Task.where(:label => "Actions::Katello::RepositorySet::ScanCdn", :state => "running").map { |task| task.update_column(:state, "stopped") }
+# ForemanTasks::Task.find("e140a579-a4a2-4a5f-9c32-97b6ae3700e8").destroy
+#------------------------------------------------------------------------------
+#-- connection information
+#------------------------------------------------------------------------------
+#-- install on server and/or capsules
+yum install qpid-dispatch-tools
+# Router statistics, see Connections for number of goferd clients
+qdstat  -b amqps://127.0.0.1:5647 -g
+# details of connected clients.
+qdstat  -b amqps://127.0.0.1:5647 -c | less
 #------------------------------------------------------------------------------
 #-- Backing up (Based on chapter 6 in Server Admin Guide)
 #   REF: https://access.redhat.com/documentation/en/red-hat-satellite/6.2/html/server-administration-guide

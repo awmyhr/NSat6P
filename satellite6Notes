@@ -4,7 +4,7 @@
 #------------------------------------------------------------------------------
 # name:    Satellite 6 Notes (satellite6Notes)
 # author:  awmyhr@gmail.com
-# revised: 20200122-103126
+# revised: 20200124-124714
 # created: 2016-12-07
 #------------------------------------------------------------------------------
 #-- NOTE: This document was compiled running Satellite 6.2.4 on RHEL 7.3
@@ -62,7 +62,9 @@ subscription-manager list --consumed
 subscription-manager repos --disable "*"
 subscription-manager repos --enable=rhel-7-server-rpms \
                            --enable=rhel-server-rhscl-7-rpms \
-                           --enable=rhel-7-server-satellite-6.2-rpms
+                           --enable=rhel-7-server-satellite-6.5-rpms \
+                           --enable=rhel-7-server-satellite-maintenance-6-rpms \
+                           --enable=rhel-7-server-ansible-2.6-rpms
 yum clean all && yum repolist enabled
 #------------------------------------------------------------------------------
 #-- Filesystems needed for Satellite server/capsule
@@ -104,7 +106,8 @@ satellite-installer --scenario satellite \
                     --foreman-admin-password       "${SAT6_ADMIN_PASS}" \
                     --foreman-admin-username       "${SAT6_ADMIN_USER}" \
                     --foreman-initial-location     "${SAT6_INIT_LOC}" \
-                    --foreman-initial-organization "${SAT6_INIT_ORG}"
+                    --foreman-initial-organization "${SAT6_INIT_ORG}" \
+                    --puppet-runmode=none
 #------------------------------------------------------------------------------
 #-- Setup for easier hammer usage
 #   REF: https://access.redhat.com/documentation/en/red-hat-satellite/6.2/html/hammer-cli-guide
